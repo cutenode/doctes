@@ -5,10 +5,13 @@ export async function parser (executedCommand, node) {
 
   const result = {
     line: node.position.start.line,
-    code: node.value
+    exitCode: node.value
   }
 
   const data = new Promise((resolve, reject) => {
+    if(executedCommand === '') { // when we pass in no command, exit successfully
+      resolve(result)
+    }
     executedCommand.stdout.on('data', (data) => {
       if(Buffer.isBuffer(data)) data = data.toString()
       result.stdout = data
