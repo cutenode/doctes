@@ -43,7 +43,7 @@ if(!process.argv.includes('--dir') && !process.argv.includes('--file')) {
 
 const { values, positionals } = parseArgs({ options })
 
-async function parsePath () {
+async function execute () {
   if(values.file && values.dir) {
     console.log('Please choose either a file or a directory, not both.')
     process.exitCode(1)
@@ -76,7 +76,7 @@ async function logCheck (executedBlocks, filename, values) {
   for (const result of executedBlocks) {
     if (result.exitCode === 0) {
       results.pass.push({line: result.line, filename: filename})
-    } else {
+    } else if (result.exitCode === 1) {
       results.fail.push({line: result.line, filename: filename})
     }
   }
@@ -106,4 +106,4 @@ async function logCheck (executedBlocks, filename, values) {
   }
 }
 
-await parsePath()
+await execute()
