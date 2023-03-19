@@ -1,0 +1,404 @@
+[
+  {
+    line: 378,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const joined = path.join('/foo', 'bar', 'baz/asdf', 'quux', '..');\n" +
+      "// Returns: '/foo/bar/baz/asdf'",
+    exitCode: 0
+  },
+  { line: 12, code: "const path = require('node:path');", exitCode: 0 },
+  {
+    line: 430,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const normalizedWindows = path.win32.normalize('C:////temp\\\\\\\\/\\\\/\\\\/foo/bar');\n" +
+      'console.log(normalizedWindows);\n' +
+      "// Returns: 'C:\\\\temp\\\\foo\\\\bar'",
+    stdout: 'C:\\temp\\foo\\bar\n',
+    exitCode: 0
+  },
+  {
+    line: 419,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const normalizedWindows = path.normalize('C:\\\\temp\\\\\\\\foo\\\\bar\\\\..\\\\');\n" +
+      'console.log(normalizedWindows);\n' +
+      "// Returns: 'C:\\\\temp\\\\foo\\\\'",
+    stdout: 'C:\\temp\\\\foo\\bar\\..\\\n',
+    exitCode: 0
+  },
+  {
+    line: 409,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const normalized = path.normalize('/foo/bar//baz/asdf/quux/..');\n" +
+      'console.log(normalized);\n' +
+      "// Prints: '/foo/bar/baz/asdf'",
+    stdout: '/foo/bar/baz/asdf\n',
+    exitCode: 0
+  },
+  {
+    line: 348,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "console.log(path.isAbsolute('//server'));    // Prints: true\n" +
+      "console.log(path.isAbsolute('\\\\\\\\server'));  // Prints: true\n" +
+      "console.log(path.isAbsolute('C:/foo/..'));   // Prints: true\n" +
+      "console.log(path.isAbsolute('C:\\\\foo\\\\..')); // Prints: true\n" +
+      "console.log(path.isAbsolute('bar\\\\baz'));    // Prints: false\n" +
+      "console.log(path.isAbsolute('bar/baz'));     // Prints: false\n" +
+      "console.log(path.isAbsolute('.'));           // Prints: false",
+    stdout: 'true\nfalse\nfalse\nfalse\nfalse\nfalse\nfalse\n',
+    exitCode: 0
+  },
+  {
+    line: 337,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "console.log(path.isAbsolute('/foo/bar')); // Prints: true\n" +
+      "console.log(path.isAbsolute('/baz/..'));  // Prints: true\n" +
+      "console.log(path.isAbsolute('qux/'));     // Prints: false\n" +
+      "console.log(path.isAbsolute('.'));        // Prints: false",
+    stdout: 'true\ntrue\nfalse\nfalse\n',
+    exitCode: 0
+  },
+  {
+    line: 311,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      'const windowsFormatted = path.format({\n' +
+      "  dir: 'C:\\\\path\\\\dir',\n" +
+      "  base: 'file.txt',\n" +
+      '});\n' +
+      'console.log(windowsFormatted);\n' +
+      "// Prints: 'C:\\\\path\\\\dir\\\\file.txt'",
+    stdout: 'C:\\path\\dir/file.txt\n',
+    exitCode: 0
+  },
+  {
+    line: 265,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      '// If `dir`, `root` and `base` are provided,\n' +
+      '// `${dir}${path.sep}${base}`\n' +
+      '// will be returned. `root` is ignored.\n' +
+      'const formatted = path.format({\n' +
+      "  root: '/ignored',\n" +
+      "  dir: '/home/user/dir',\n" +
+      "  base: 'file.txt',\n" +
+      '});\n' +
+      'console.log(formatted);\n' +
+      "// Prints: '/home/user/dir/file.txt'\n" +
+      '\n' +
+      '// `root` will be used if `dir` is not specified.\n' +
+      '// If only `root` is provided or `dir` is equal to `root` then the\n' +
+      '// platform separator will not be included. `ext` will be ignored.\n' +
+      'const secondFormatted = path.format({\n' +
+      "  root: '/',\n" +
+      "  base: 'file.txt',\n" +
+      "  ext: 'ignored',\n" +
+      '});\n' +
+      'console.log(secondFormatted);\n' +
+      "// Prints: '/file.txt'\n" +
+      '\n' +
+      '// `name` + `ext` will be used if `base` is not specified.\n' +
+      'const thirdFormatted = path.format({\n' +
+      "  root: '/',\n" +
+      "  name: 'file',\n" +
+      "  ext: '.txt',\n" +
+      '});\n' +
+      'console.log(thirdFormatted);\n' +
+      "// Prints: '/file.txt'\n" +
+      '\n' +
+      '// The dot will be added if it is not specified in `ext`.\n' +
+      'const fourthFormatted = path.format({\n' +
+      "  root: '/',\n" +
+      "  name: 'file',\n" +
+      "  ext: 'txt',\n" +
+      '});\n' +
+      'console.log(fourthFormatted);\n' +
+      "// Prints: '/file.txt'",
+    stdout: '/home/user/dir/file.txt\n/file.txt\n/file.txt\n/filetxt\n',
+    exitCode: 0
+  },
+  {
+    line: 212,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "console.log(path.extname('index.html'));\n" +
+      "// Prints: '.html'\n" +
+      '\n' +
+      "console.log(path.extname('index.coffee.md'));\n" +
+      "// Prints: '.md'\n" +
+      '\n' +
+      "console.log(path.extname('index.'));\n" +
+      "// Prints: '.'\n" +
+      '\n' +
+      "console.log(path.extname('index'));\n" +
+      "// Prints: ''\n" +
+      '\n' +
+      "console.log(path.extname('.index'));\n" +
+      "// Prints: ''\n" +
+      '\n' +
+      "console.log(path.extname('.index.md'));\n" +
+      "// Prints: '.md'",
+    stdout: '.html\n.md\n.\n\n\n.md\n',
+    exitCode: 0
+  },
+  {
+    line: 183,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const dirname = path.dirname('/foo/bar/baz/asdf/quux');\n" +
+      'console.log(dirname)\n' +
+      "// Prints: '/foo/bar/baz/asdf'",
+    stdout: '/foo/bar/baz/asdf\n',
+    exitCode: 0
+  },
+  {
+    line: 155,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      'console.log(process.env.PATH);\n' +
+      "// Prints: 'C:\\Windows\\system32;C:\\Windows;C:\\Program Files\\node\\'\n" +
+      '\n' +
+      'const splitPath = process.env.PATH.split(path.delimiter);\n' +
+      'console.log(splitPath);\n' +
+      "// Prints ['C:\\\\Windows\\\\system32', 'C:\\\\Windows', 'C:\\\\Program Files\\\\node\\\\']",
+    stdout: '/usr/local/opt/python@3.8/bin:/Users/cyren/GitHub/build-tools/src:/usr/local/share/dotnet:/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/Users/cyren/bin:/Users/cyren/.nvm/versions/node/v18.3.0/bin:/Users/cyren/homebrew/bin:/Users/cyren/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/opt/python@3.8/bin:/Users/cyren/GitHub/build-tools/src:/usr/local/share/dotnet:/Users/cyren/bin:/Users/cyren/.nvm/versions/node/v18.3.0/bin:/Users/cyren/homebrew/bin:/Users/cyren/homebrew/sbin\n' +
+      '[\n' +
+      "  '/usr/local/opt/python@3.8/bin',\n" +
+      "  '/Users/cyren/GitHub/build-tools/src',\n" +
+      "  '/usr/local/share/dotnet',\n" +
+      "  '/sbin',\n" +
+      "  '/usr/sbin',\n" +
+      "  '/bin',\n" +
+      "  '/usr/bin',\n" +
+      "  '/usr/local/bin',\n" +
+      "  '/Users/cyren/bin',\n" +
+      "  '/Users/cyren/.nvm/versions/node/v18.3.0/bin',\n" +
+      "  '/Users/cyren/homebrew/bin',\n" +
+      "  '/Users/cyren/homebrew/sbin',\n" +
+      "  '/usr/local/bin',\n" +
+      "  '/usr/bin',\n" +
+      "  '/bin',\n" +
+      "  '/usr/sbin',\n" +
+      "  '/sbin',\n" +
+      "  '/usr/local/opt/python@3.8/bin',\n" +
+      "  '/Users/cyren/GitHub/build-tools/src',\n" +
+      "  '/usr/local/share/dotnet',\n" +
+      "  '/Users/cyren/bin',\n" +
+      "  '/Users/cyren/.nvm/versions/node/v18.3.0/bin',\n" +
+      "  '/Users/cyren/homebrew/bin',\n" +
+      "  '/Users/cyren/homebrew/sbin'\n" +
+      ']\n',
+    exitCode: 0
+  },
+  {
+    line: 142,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      'console.log(process.env.PATH);\n' +
+      "// Prints: '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'\n" +
+      '\n' +
+      'const splitPath = process.env.PATH.split(path.delimiter);\n' +
+      'console.log(splitPath);\n' +
+      "// Prints: ['/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin']",
+    stdout: '/usr/local/opt/python@3.8/bin:/Users/cyren/GitHub/build-tools/src:/usr/local/share/dotnet:/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/Users/cyren/bin:/Users/cyren/.nvm/versions/node/v18.3.0/bin:/Users/cyren/homebrew/bin:/Users/cyren/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/opt/python@3.8/bin:/Users/cyren/GitHub/build-tools/src:/usr/local/share/dotnet:/Users/cyren/bin:/Users/cyren/.nvm/versions/node/v18.3.0/bin:/Users/cyren/homebrew/bin:/Users/cyren/homebrew/sbin\n' +
+      '[\n' +
+      "  '/usr/local/opt/python@3.8/bin',\n" +
+      "  '/Users/cyren/GitHub/build-tools/src',\n" +
+      "  '/usr/local/share/dotnet',\n" +
+      "  '/sbin',\n" +
+      "  '/usr/sbin',\n" +
+      "  '/bin',\n" +
+      "  '/usr/bin',\n" +
+      "  '/usr/local/bin',\n" +
+      "  '/Users/cyren/bin',\n" +
+      "  '/Users/cyren/.nvm/versions/node/v18.3.0/bin',\n" +
+      "  '/Users/cyren/homebrew/bin',\n" +
+      "  '/Users/cyren/homebrew/sbin',\n" +
+      "  '/usr/local/bin',\n" +
+      "  '/usr/bin',\n" +
+      "  '/bin',\n" +
+      "  '/usr/sbin',\n" +
+      "  '/sbin',\n" +
+      "  '/usr/local/opt/python@3.8/bin',\n" +
+      "  '/Users/cyren/GitHub/build-tools/src',\n" +
+      "  '/usr/local/share/dotnet',\n" +
+      "  '/Users/cyren/bin',\n" +
+      "  '/Users/cyren/.nvm/versions/node/v18.3.0/bin',\n" +
+      "  '/Users/cyren/homebrew/bin',\n" +
+      "  '/Users/cyren/homebrew/sbin'\n" +
+      ']\n',
+    exitCode: 0
+  },
+  {
+    line: 112,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const directory = path.win32.basename('C:\\\\foo.html', '.html');\n" +
+      'console.log(directory);\n' +
+      "// Logs: 'foo'\n" +
+      '\n' +
+      "const secondDirectory = path.win32.basename('C:\\\\foo.HTML', '.html');\n" +
+      'console.log(secondDirectory);\n' +
+      "// Logs: 'foo.HTML'",
+    stdout: 'foo\nfoo.HTML\n',
+    exitCode: 0
+  },
+  {
+    line: 95,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const directory = path.basename('/foo/bar/baz/asdf/quux.html');\n" +
+      'console.log(directory);\n' +
+      "// Logs: 'quux.html'\n" +
+      '\n' +
+      "const secondDirectory = path.basename('/foo/bar/baz/asdf/quux.html', '.html');\n" +
+      'console.log(secondDirectory);\n' +
+      "// Logs: 'quux'",
+    stdout: 'quux.html\nquux\n',
+    exitCode: 0
+  },
+  {
+    line: 63,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const directory = path.posix.basename('/tmp/myfile.html');\n" +
+      'console.log(directory);\n' +
+      "// Logs: 'myfile.html'",
+    stdout: 'myfile.html\n',
+    exitCode: 0
+  },
+  {
+    line: 50,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const directory = path.win32.basename('C:\\\\temp\\\\myfile.html');\n" +
+      'console.log(directory);\n' +
+      "// Logs: 'myfile.html'",
+    stdout: 'myfile.html\n',
+    exitCode: 0
+  },
+  {
+    line: 37,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const directory = path.basename('C:\\\\temp\\\\myfile.html');\n" +
+      'console.log(directory);\n' +
+      "// Logs: 'myfile.html'",
+    stdout: 'C:\\temp\\myfile.html\n',
+    exitCode: 0
+  },
+  {
+    line: 27,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const directory = path.basename('C:\\\\temp\\\\myfile.html');\n" +
+      'console.log(directory);\n' +
+      "// Logs: 'C:\\\\temp\\\\myfile.html'",
+    stdout: 'C:\\temp\\myfile.html\n',
+    exitCode: 0
+  },
+  {
+    line: 463,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const parsed = path.parse('/home/user/dir/file.txt');\n" +
+      'console.log(parsed);\n' +
+      '// Prints:\n' +
+      "// { root: '/',\n" +
+      "//   dir: '/home/user/dir',\n" +
+      "//   base: 'file.txt',\n" +
+      "//   ext: '.txt',\n" +
+      "//   name: 'file' }",
+    stdout: '{\n' +
+      "  root: '/',\n" +
+      "  dir: '/home/user/dir',\n" +
+      "  base: 'file.txt',\n" +
+      "  ext: '.txt',\n" +
+      "  name: 'file'\n" +
+      '}\n',
+    exitCode: 0
+  },
+  {
+    line: 488,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const parsed = path.parse('C:\\\\path\\\\dir\\\\file.txt');\n" +
+      'console.log(parsed);\n' +
+      '// Returns:\n' +
+      "// { root: 'C:\\\\',\n" +
+      "//   dir: 'C:\\\\path\\\\dir',\n" +
+      "//   base: 'file.txt',\n" +
+      "//   ext: '.txt',\n" +
+      "//   name: 'file' }",
+    stdout: '{\n' +
+      "  root: '',\n" +
+      "  dir: '',\n" +
+      "  base: 'C:\\\\path\\\\dir\\\\file.txt',\n" +
+      "  ext: '.txt',\n" +
+      "  name: 'C:\\\\path\\\\dir\\\\file'\n" +
+      '}\n',
+    exitCode: 0
+  },
+  {
+    line: 554,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const relative = path.relative('/data/orandea/test/aaa', '/data/orandea/impl/bbb');\n" +
+      'console.log(relative);\n' +
+      "// Prints: '../../impl/bbb'",
+    stdout: '../../impl/bbb\n',
+    exitCode: 0
+  },
+  {
+    line: 564,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const relativeWindows = path.relative('C:\\\\orandea\\\\test\\\\aaa', 'C:\\\\orandea\\\\impl\\\\bbb');\n" +
+      'console.log(relativeWindows);\n' +
+      "// Returns: '..\\\\..\\\\impl\\\\bbb'",
+    stdout: '../C:\\orandea\\impl\\bbb\n',
+    exitCode: 0
+  },
+  {
+    line: 603,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "const resolved = path.resolve('/foo/bar', './baz');\n" +
+      'console.log(resolved);\n' +
+      "// Prints: '/foo/bar/baz'\n" +
+      '\n' +
+      "const secondResolved = path.resolve('/foo/bar', '/tmp/file/');\n" +
+      'console.log(secondResolved);\n' +
+      "// Prints: '/tmp/file'\n" +
+      '\n' +
+      "const thirdResolved = path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');\n" +
+      'console.log(thirdResolved);\n' +
+      '// If the current working directory is /home/myself/node,\n' +
+      "// this prints '/home/myself/node/wwwroot/static_files/gif/image.gif'",
+    stdout: '/Users/cyren/GitHub/cutenode/doctes/wwwroot/static_files/gif/image.gif\n',
+    exitCode: 0
+  },
+  {
+    line: 637,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "console.log('foo/bar/baz'.split(path.sep));\n" +
+      "// Prints: ['foo', 'bar', 'baz']",
+    stdout: "[ 'foo', 'bar', 'baz' ]\n",
+    exitCode: 0
+  },
+  {
+    line: 646,
+    code: "const path = require('node:path');\n" +
+      '\n' +
+      "console.log('foo\\\\bar\\\\baz'.split(path.sep));\n" +
+      "// Returns: ['foo', 'bar', 'baz']",
+    stdout: "[ 'foo\\\\bar\\\\baz' ]\n",
+    exitCode: 0
+  }
+]

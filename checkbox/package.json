@@ -1,0 +1,15 @@
+{
+  "name": "checkbox",
+  "version": "0.0.1",
+  "description": "a simple pass/fail tool to use against docs. More of a checkbox than a tool that'd be useful to a human.",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "doctes"
+  ],
+  "author": "",
+  "license": "MIT"
+}

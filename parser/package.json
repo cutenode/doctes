@@ -1,0 +1,23 @@
+{
+  "name": "@doctes/parser",
+  "version": "0.0.1",
+  "description": "default doctes parser",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "lint": "standard",
+    "lint:fix": "standard --fix"
+  },
+  "keywords": [
+    "doctes",
+    "testing",
+    "docs",
+    "documentation"
+  ],
+  "author": "Tierney Cyren <hello@bnb.im> (https://bnb.im/)",
+  "license": "MIT",
+  "dependencies": {
+    "standard": "^17.0.0"
+  }
+}
