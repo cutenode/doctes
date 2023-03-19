@@ -17,7 +17,25 @@ export async function executeBlocks (tree) {
     let placeholder = []
     const result = new Promise((resolve, reject) => {
       visit(tree, async function (node, index, parent) {
-        if (node.type === 'code' && (node.lang === 'js' || node.lang === 'javascript' || node.lang === 'cjs' || node.lang === 'mjs')) {
+        // handle the situation where there are no code blocks at all
+        if(node.type === 'root') {
+          if(node.children.findLastIndex(child => child.type === 'code') === -1) {
+            const mockParsed = await parser('', node)
+            placeholder.push(mockParsed)
+            resolve(placeholder)
+          }
+
+          // method we use to check if there are any code blocks that are useful.
+          const usefulLanguageBlocks = (node) => node.lang === 'js' || node.lang === 'javascript' || node.lang === 'cjs'
+          if(node.children.some(usefulLanguageBlocks) === false) {
+            const mockParsed = await parser('', node)
+            placeholder.push(mockParsed)
+            resolve(placeholder)
+          }
+        }
+        
+        if (node.type === 'code' && (node.lang === 'js' || node.lang === 'javascript' || node.lang === 'cjs')) {
+
           const executed = spawn('node', ['--eval', `${node.value}`])
           const parsed = await parser(executed, node)
           placeholder.push(parsed)
