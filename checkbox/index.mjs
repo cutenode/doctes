@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { collectBlocks, executeBlocks } from '@doctes/core'
 import { parseArgs } from 'node:util'
 import { readdirSync, statSync } from 'node:fs'
@@ -89,6 +91,7 @@ async function logCheck (executedBlocks, filename, values) {
     console.log(JSON.stringify(results, null, 2))
   }
 
+  // TODO: rework styling to be nicer
   if(values.silent !== true) {
     console.log(`\n${results.pass.length} passed, ${results.fail.length} failed\n`)
     if(results.fail.length !== 0) {

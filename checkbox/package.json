@@ -4,6 +4,10 @@
   "description": "a simple pass/fail tool to use against docs. More of a checkbox than a tool that'd be useful to a human.",
   "type": "module",
   "main": "index.js",
+  "bin": {
+    "cbx": "index.mjs",
+    "checkbox": "index.mjs"
+  },
   "scripts": {
     "test": "node --test"
   },
