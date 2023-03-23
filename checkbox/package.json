@@ -9,11 +9,17 @@
     "checkbox": "index.mjs"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "lint": "standard",
+    "lint:fix": "standard --fix"
+
   },
   "keywords": [
     "doctes"
   ],
-  "author": "",
-  "license": "MIT"
+  "author": "Tierney Cyren <hello@bnb.im> (https://bnb.im/)",
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^17.0.0"
+  }
 }
