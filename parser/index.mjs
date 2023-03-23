@@ -9,16 +9,16 @@ export async function parser (executedCommand, node) {
   }
 
   const data = new Promise((resolve, reject) => {
-    if(executedCommand === '') { // when we pass in no command, exit successfully
+    if (executedCommand === '') { // when we pass in no command, exit successfully
       resolve(result)
     }
     executedCommand.stdout.on('data', (data) => {
-      if(Buffer.isBuffer(data)) data = data.toString()
+      if (Buffer.isBuffer(data)) data = data.toString()
       result.stdout = data
     })
-    
+
     executedCommand.stderr.on('data', (data) => {
-      if(Buffer.isBuffer(data)) data = data.toString()
+      if (Buffer.isBuffer(data)) data = data.toString()
       result.stderr = data
     })
 
